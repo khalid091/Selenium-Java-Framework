@@ -113,6 +113,46 @@ The project includes a `Jenkinsfile` for CI/CD pipeline:
    - LambdaTest: Configure credentials in environment variables
    - BrowserStack: Add BrowserStack credentials to Jenkins
 
+### Running Specific Features Using Tags
+You can run specific feature files or scenarios using tags in your feature files and TestRunner:
+
+1. Add tags to your feature files:
+```gherkin
+@smoke
+Feature: User Registration
+  @regression
+  Scenario: Successful registration with valid data
+    Given user is on registration page
+    When user enters valid registration data
+    Then user should be registered successfully
+```
+
+2. Configure tags in TestRunner.java:
+```java
+@CucumberOptions(
+    tags = "@smoke or @regression"  // Run scenarios with either @smoke or @regression tag
+)
+```
+
+Common tag patterns:
+- `@smoke` - Run only smoke tests
+- `@regression` - Run only regression tests
+- `@smoke and @regression` - Run tests with both tags
+- `@smoke or @regression` - Run tests with either tag
+- `not @smoke` - Run all tests except smoke tests
+
+3. Run tests from command line with specific tags:
+```bash
+# Run smoke tests
+mvn test -Dcucumber.filter.tags="@smoke"
+
+# Run regression tests
+mvn test -Dcucumber.filter.tags="@regression"
+
+# Run tests with both tags
+mvn test -Dcucumber.filter.tags="@smoke and @regression"
+```
+
 ## Reports
 - Cucumber HTML reports: `target/cucumber-reports/cucumber-pretty.html`
 - ExtentReports: `target/extent-reports/`
@@ -134,7 +174,7 @@ The project includes a `Jenkinsfile` for CI/CD pipeline:
 
 ## Checking Test Reports
 
-### 1. Cucumber Reports
+### Cucumber Reports
 After test execution, you can find Cucumber reports in:
 ```
 target/cucumber-reports/
@@ -151,41 +191,36 @@ To view the reports:
    - Passed/Failed scenarios
    - Step-by-step execution details
    - Screenshots (if configured)
+   - Feature and scenario breakdown
+   - Execution time statistics
+   - Tags and hooks information
 
-### 2. ExtentReports
-ExtentReports are available at:
-```
-target/extent-reports/
-└── ExtentReport.html
-```
-
-Features:
-- Interactive dashboard
-- Test execution timeline
-- Detailed test steps
-- Screenshots and logs
-- Filtering capabilities
-
-### 3. Jenkins Reports
+### Jenkins Reports
 If running in Jenkins:
 1. Go to your Jenkins job
 2. Click on the latest build
 3. Find reports under:
    - "Cucumber Reports" section
-   - "HTML Reports" section
    - "Test Results" section
 
-### 4. Command Line Report Generation
+### Command Line Report Generation
 To generate reports without running tests:
 ```bash
 # Generate Cucumber reports
 mvn verify
-
-# Generate ExtentReports
-mvn test -Dextent.reporter.spark.out=target/extent-reports/ExtentReport.html
 ```
 
-### 5. Report Customization
-To customize reports, modify:
-- `src/test/resources/extent-config.xml` for ExtentReports
-- `@CucumberOptions` in TestRunner.java for Cucumber reports 
+### Report Customization
+To customize Cucumber reports, modify `@CucumberOptions` in TestRunner.java:
+```java
+@CucumberOptions(
+    features = "src/test/resources/features",
+    glue = "stepdefinitions",
+    plugin = {
+        "pretty",
+        "html:target/cucumber-reports/cucumber-pretty.html",
+        "json:target/cucumber-reports/CucumberTestReport.json",
+        "com.aventstack.extentreports.cucumber.adapter.ExtentCucumberAdapter:"
+    }
+)
+``` 
