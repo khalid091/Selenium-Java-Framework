@@ -2,9 +2,10 @@ package stepdefinitions;
 
 import io.cucumber.java.en. *;
 import io.cucumber.java.After;
+import io.cucumber.java.Before;
 import actions.RegisterActions;
 import data.TestDataProvider;
-import commons.Commons;
+import commons.DriverManager;
 
 public class RegisterStepDefinitions {
     private RegisterActions registerActions;
@@ -12,10 +13,14 @@ public class RegisterStepDefinitions {
     public RegisterStepDefinitions() {
         this.registerActions = new RegisterActions();
     }
+
+    @Before
+    public void setUp() {
+        DriverManager.getDriver();
+    }
     
     @Given("user is in the login page")
     public void userOnTheLoginPage() {
-        registerActions.initializeDriver();
         registerActions.navigateToLoginPage();
         registerActions.verifyTheLoginPage();
     }
@@ -35,6 +40,6 @@ public class RegisterStepDefinitions {
 
     @After
     public void tearDown() {
-        Commons.quitDriver();
+        DriverManager.quitDriver();
     }
 } 

@@ -1,49 +1,51 @@
 package actions;
 
+import commons.ConfigManager;
+import commons.DriverManager;
 import commons.Commons;
-import page.ecomqa.Register_Page.RegisterPage;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.testng.Assert;
+import page.ecomqa.Register_Page.RegisterPage;
 import page.ecomqa.Register_Page.locators.RegisterPageLocators;
+import utils.SeleniumUtils;
 
 public class RegisterActions {
-    private static final String BASE_URL = "https://automationexercise.com";
-    private static final String LOGIN_URL = BASE_URL + "/login";
-    private final RemoteWebDriver driver;
     private final Commons commons;
+    private final RemoteWebDriver driver;
+    private final SeleniumUtils seleniumUtils;
     private final RegisterPage registerPage;
+    private final String baseUrl;
+    private final String loginUrl;
 
     public RegisterActions() {
-        this.commons = Commons.getInstance();
-        this.driver = Commons.getDriver();
+        this.commons = new Commons();
+        this.driver = commons.getDriver();
+        this.seleniumUtils = commons.getSeleniumUtils();
+        this.baseUrl = ConfigManager.getInstance().getBaseUrl();
+        this.loginUrl = ConfigManager.getInstance().getLoginUrl();
         this.registerPage = new RegisterPage(driver);
     }
 
-    public void initializeDriver() {
-        Commons.getDriver();
-    }
-
     public void navigateToLoginPage() {
-        commons.getSeleniumUtils().navigateTo(LOGIN_URL);
+        seleniumUtils.navigateTo(loginUrl);
     }
 
     public void verifyTheLoginPage() {
         Assert.assertTrue(registerPage.signupHeaderElement(), "Signup header is not displayed");
-        Assert.assertTrue(registerPage.inputUsernameElement("testuser01"), "Username input is not displayed");
-        Assert.assertTrue(registerPage.inputEmailElement("testuser01@mailinator.com"), "Email input is not displayed");
+        Assert.assertTrue(registerPage.inputUsernameElement(), "Username input is not displayed");
+        Assert.assertTrue(registerPage.inputEmailElement(), "Email input is not displayed");
         Assert.assertTrue(registerPage.signupButtonElement(), "Signup button is not displayed");
     }
 
     public void inputUsername(String username) {
-        commons.getSeleniumUtils().clearAndSendKeys(RegisterPageLocators.USERNAME_INPUT, username);
+        seleniumUtils.clearAndSendKeys(RegisterPageLocators.USERNAME_INPUT, username);
     }
 
-    public void inputEmail(String email){
-        commons.getSeleniumUtils().clearAndSendKeys(RegisterPageLocators.EMAIL_INPUT, email);
+    public void inputEmail(String email) {
+        seleniumUtils.clearAndSendKeys(RegisterPageLocators.EMAIL_INPUT, email);
     }
 
-    public void clickSignupButton(){
-        commons.getSeleniumUtils().click(RegisterPageLocators.SIGNUP_BUTTON);
+    public void clickSignupButton() {
+        seleniumUtils.click(RegisterPageLocators.SIGNUP_BUTTON);
     }
-
 }

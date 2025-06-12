@@ -15,11 +15,11 @@ public class RegisterPage {
         return seleniumUtils.isElementDisplayed(RegisterPageLocators.HEADER_SIGNUP_TEXT);
     }
 
-    public boolean inputUsernameElement(String username) {
+    public boolean inputUsernameElement() {
        return seleniumUtils.isElementDisplayed(RegisterPageLocators.USERNAME_INPUT);
     }
 
-    public boolean inputEmailElement(String email) {
+    public boolean inputEmailElement() {
         return seleniumUtils.isElementDisplayed(RegisterPageLocators.EMAIL_INPUT);
     }
 
