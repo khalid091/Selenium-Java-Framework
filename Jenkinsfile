@@ -8,6 +8,9 @@ pipeline {
     
     environment {
         BROWSER = 'chrome'
+        MAVEN_HOME = tool 'Maven'
+        JAVA_HOME = tool 'JDK11'
+        PATH = "${env.JAVA_HOME}\\bin;${env.MAVEN_HOME}\\bin;${env.PATH}"
     }
     
     stages {
@@ -19,13 +22,13 @@ pipeline {
         
         stage('Build') {
             steps {
-                sh 'mvn clean install'
+                bat 'mvn clean install'
             }
         }
         
         stage('Test') {
             steps {
-                sh 'mvn test'
+                bat 'mvn test'
             }
             post {
                 always {
