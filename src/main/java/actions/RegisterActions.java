@@ -1,28 +1,24 @@
 package actions;
 
-import commons.ConfigManager;
-import commons.DriverManager;
-import commons.Commons;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.testng.Assert;
 import page.ecomqa.Register_Page.RegisterPage;
 import page.ecomqa.Register_Page.locators.RegisterPageLocators;
 import utils.SeleniumUtils;
+import commons.Commons;
 
 public class RegisterActions {
     private final Commons commons;
     private final RemoteWebDriver driver;
     private final SeleniumUtils seleniumUtils;
     private final RegisterPage registerPage;
-    private final String baseUrl;
     private final String loginUrl;
 
     public RegisterActions() {
         this.commons = new Commons();
         this.driver = commons.getDriver();
         this.seleniumUtils = commons.getSeleniumUtils();
-        this.baseUrl = ConfigManager.getInstance().getBaseUrl();
-        this.loginUrl = ConfigManager.getInstance().getLoginUrl();
+        this.loginUrl = commons.getLoginUrl();
         this.registerPage = new RegisterPage(driver);
     }
 

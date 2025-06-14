@@ -3,7 +3,6 @@ package commons;
 import java.io.InputStream;
 import java.io.FileInputStream;
 import java.util.Map;
-import java.util.HashMap;
 
 import org.yaml.snakeyaml.Yaml;
 
