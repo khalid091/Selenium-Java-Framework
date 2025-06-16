@@ -7,7 +7,7 @@ browser:
   browserVersion: dev
   LT_Options:
     build: Java TestNG Sample
-    name: LambdaTest Sample Test
+    name: Selenium Test Suite
     username: khalidbahaj123
     accessKey: LT_7D9gH7NR9OK1yEdHRsf4zzXYQm9FD34K9Nb0PlEW3ghwifS
     platformName: Windows 10

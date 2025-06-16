@@ -7,6 +7,7 @@ import java.io.InputStream;
 import java.io.FileInputStream;
 import java.net.URL;
 import java.util.Map;
+import java.util.Objects;
 
 import org.yaml.snakeyaml.Yaml;
 import org.apache.logging.log4j.LogManager;
@@ -32,26 +33,36 @@ public class DriverManager {
             logger.info("Loading configuration from {}", CONFIG_PATH);
             Yaml yaml = new Yaml();
             Map<String, Object> config = yaml.load(input);
+            Objects.requireNonNull(config, "Failed to load configuration from " + CONFIG_PATH);
 
             DesiredCapabilities capabilities = new DesiredCapabilities();
             @SuppressWarnings("unchecked")
             Map<String, Object> browserConfig = (Map<String, Object>) config.get("browser");
+            Objects.requireNonNull(browserConfig, "'browser' section not found in config");
+
+            String browserName = Objects.requireNonNull(
+                (String) browserConfig.get("browserName"),
+                "browserName not found in configuration"
+            );
+            String browserVersion = Objects.requireNonNull(
+                (String) browserConfig.get("browserVersion"),
+                "browserVersion not found in configuration"
+            );
 
             logger.info("Setting browser capabilities: browserName={}, browserVersion={}",
-                    browserConfig.get("browserName"), browserConfig.get("browserVersion"));
-            capabilities.setCapability("browserName", browserConfig.get("browserName"));
-            capabilities.setCapability("browserVersion", browserConfig.get("browserVersion"));
+                    browserName, browserVersion);
+            capabilities.setCapability("browserName", browserName);
+            capabilities.setCapability("browserVersion", browserVersion);
 
             @SuppressWarnings("unchecked")
             Map<String, Object> ltOptions = (Map<String, Object>) browserConfig.get("LT_Options");
+            Objects.requireNonNull(ltOptions, "LT_Options not found in configuration");
             capabilities.setCapability("LT:Options", ltOptions);
 
-            String hubUrl = (String) browserConfig.get("hubUrl");
-
-            if (hubUrl == null) {
-                logger.error("hubUrl is null in the config file. Please check your configuration.");
-                throw new RuntimeException("hubUrl is null in the config file. Please check your configuration.");
-            }
+            String hubUrl = Objects.requireNonNull(
+                (String) browserConfig.get("hubUrl"),
+                "hubUrl not found in configuration"
+            );
 
             logger.info("Connecting to Selenium hub at {}", hubUrl);
             return new RemoteWebDriver(new URL(hubUrl), capabilities);
