@@ -1,0 +1,26 @@
+17:24:48.698 [main] INFO  runners.TestRunner - TestRunner initialized with Cucumber options: features=src/test/resources/features, glue=stepdefinitions, tags=@smoke or @regression
+17:24:49.139 [main] INFO  commons.DriverManager - Initializing new WebDriver instance for thread: main
+17:24:49.139 [main] INFO  commons.DriverManager - Loading configuration from src/test/resources/config/lambdatest-config.yaml
+17:24:49.173 [main] INFO  commons.DriverManager - Setting browser capabilities: browserName=Chrome, browserVersion=dev
+17:24:49.174 [main] INFO  commons.DriverManager - Connecting to Selenium hub at https://khalidbahaj123:LT_7D9gH7NR9OK1yEdHRsf4zzXYQm9FD34K9Nb0PlEW3ghwifS@hub.lambdatest.com/wd/hub
+17:25:07.634 [main] INFO  actions.RegisterActions - Login page is verified successfully.
+17:25:12.229 [main] INFO  commons.DriverManager - Quitting WebDriver instance for thread: main
+17:26:12.616 [main] INFO  runners.TestRunner - TestRunner initialized with Cucumber options: features=src/test/resources/features, glue=stepdefinitions, tags=@smoke or @regression
+17:26:13.063 [main] INFO  commons.DriverManager - Initializing new WebDriver instance for thread: main
+17:26:13.063 [main] INFO  commons.DriverManager - Loading configuration from src/test/resources/config/lambdatest-config.yaml
+17:26:13.096 [main] INFO  commons.DriverManager - Setting browser capabilities: browserName=Chrome, browserVersion=dev
+17:26:13.097 [main] INFO  commons.DriverManager - Connecting to Selenium hub at https://khalidbahaj123:LT_7D9gH7NR9OK1yEdHRsf4zzXYQm9FD34K9Nb0PlEW3ghwifS@hub.lambdatest.com/wd/hub
+17:26:32.031 [main] INFO  actions.RegisterActions - Login page is verified successfully.
+17:26:36.538 [main] INFO  commons.DriverManager - Quitting WebDriver instance for thread: main
+17:33:05.056 [main] INFO  runners.TestRunner - TestRunner initialized with Cucumber options: features=src/test/resources/features, glue=stepdefinitions, tags=@smoke or @regression
+17:33:05.498 [main] INFO  commons.DriverManager - Initializing new WebDriver instance for thread: main
+17:33:05.498 [main] INFO  commons.DriverManager - Loading configuration from src/test/resources/config/lambdatest-config.yaml
+17:33:05.532 [main] INFO  commons.DriverManager - Setting browser capabilities: browserName=Chrome, browserVersion=dev
+17:33:05.533 [main] INFO  commons.DriverManager - Connecting to Selenium hub at https://khalidbahaj123:LT_7D9gH7NR9OK1yEdHRsf4zzXYQm9FD34K9Nb0PlEW3ghwifS@hub.lambdatest.com/wd/hub
+17:33:28.692 [main] INFO  commons.DriverManager - Quitting WebDriver instance for thread: main
+21:12:13.645 [main] INFO  runners.TestRunner - TestRunner initialized with Cucumber options: features=src/test/resources/features, glue=stepdefinitions, tags=@smoke or @regression
+21:12:14.131 [main] INFO  commons.DriverManager - Initializing new WebDriver instance for thread: main
+21:12:14.132 [main] INFO  commons.DriverManager - Loading configuration from src/test/resources/config/lambdatest-config.yaml
+21:12:14.167 [main] INFO  commons.DriverManager - Setting browser capabilities: browserName=Chrome, browserVersion=dev
+21:12:14.168 [main] INFO  commons.DriverManager - Connecting to Selenium hub at https://khalidbahaj123:LT_7D9gH7NR9OK1yEdHRsf4zzXYQm9FD34K9Nb0PlEW3ghwifS@hub.lambdatest.com/wd/hub
+21:12:44.324 [main] INFO  commons.DriverManager - Quitting WebDriver instance for thread: main
