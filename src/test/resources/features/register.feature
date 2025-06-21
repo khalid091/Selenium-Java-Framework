@@ -1,10 +1,10 @@
 Feature: Register Functionality
   As a user
-  I want to be able to login to the application
-  So that I can access my account
+  I want to be able to register for a new account
+  So that I can access the application
 
   @smoke
-  Scenario: User Registered Successfully
-    Given user is in the login page
-    When user fill username and email
-    And user click signup button
+  Scenario: User Registration Flow
+    Given user is on the login page
+    When user fills username and email from row 1
+    And user clicks signup button

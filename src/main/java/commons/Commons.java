@@ -20,12 +20,4 @@ public class Commons {
     public SeleniumUtils getSeleniumUtils() {
         return seleniumUtils;
     }
-
-    public String getBaseUrl() {
-        return ConfigManager.getInstance().getBaseUrl();
-    }
-
-    public String getLoginUrl() {
-        return ConfigManager.getInstance().getLoginUrl();
-    }
 }

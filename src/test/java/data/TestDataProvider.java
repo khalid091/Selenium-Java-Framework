@@ -7,12 +7,38 @@ public class TestDataProvider {
     private static final String EXCEL_PATH = "src/test/resources/testdata/testdata.xlsx";
     private static final String SHEET_NAME = "Sheet1";
 
-    public static String getUsername() {
-        return getCellData(1, "Username");
+    /**
+     * Gets username from the specified row.
+     * @param rowIndex The row index (1-based).
+     * @return The username from the specified row.
+     */
+    public static String getUsername(int rowIndex) {
+        return getCellData(rowIndex, "Username");
     }
 
+    /**
+     * Gets email from the specified row.
+     * @param rowIndex The row index (1-based).
+     * @return The email from the specified row.
+     */
+    public static String getEmail(int rowIndex) {
+        return getCellData(rowIndex, "Email");
+    }
+
+    /**
+     * Gets username from row 1 (backward compatibility).
+     * @return The username from row 1.
+     */
+    public static String getUsername() {
+        return getUsername(1);
+    }
+
+    /**
+     * Gets email from row 1 (backward compatibility).
+     * @return The email from row 1.
+     */
     public static String getEmail() {
-        return getCellData(1, "Email");
+        return getEmail(1);
     }
 
     private static String getCellData(int rowIndex, String columnName) {

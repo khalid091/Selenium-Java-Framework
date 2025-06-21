@@ -1,226 +1,282 @@
 # Selenium Java BDD Framework
 
-A robust test automation framework built with Selenium WebDriver, Java, and Cucumber BDD.
+A robust, type-safe test automation framework built with Selenium WebDriver, Java, Cucumber BDD, and TestNG. Features strong typing, comprehensive error handling, and cloud testing integration.
 
-## Project Structure
+## 🚀 Key Features
+
+- **Strong Typing**: BrowserConfig POJO for compile-time safety
+- **Thread-Safe**: ThreadLocal WebDriver management for parallel execution
+- **Cloud Integration**: LambdaTest integration for cross-browser testing
+- **Data-Driven Testing**: Excel-based test data with flexible row access
+- **Clean Architecture**: Separation of concerns with Page Objects, Actions, and Commons
+- **Comprehensive Logging**: Structured logging with Log4j2
+- **CI/CD Ready**: Jenkins pipeline integration
+
+## 📁 Project Structure
+
 ```
-selenium-java-bdd/
+Selenium-Java-Framework/
 ├── src/
 │   ├── main/
 │   │   └── java/
-│   │       ├── actions/          # Page actions and business logic
-│   │       ├── commons/          # Common utilities and configurations
-│   │       └── page/             # Page Object Model classes
+│   │       ├── actions/              # Business logic and page actions
+│   │       │   └── RegisterActions.java
+│   │       ├── commons/              # Common utilities and configurations
+│   │       │   ├── BrowserConfig.java    # Strongly-typed browser configuration
+│   │       │   ├── ConfigManager.java    # YAML configuration management
+│   │       │   └── DriverManager.java    # Thread-safe WebDriver management
+│   │       ├── page/                 # Page Object Model classes
+│   │       │   └── ecomqa/
+│   │       │       └── Register_Page/
+│   │       │           ├── RegisterPage.java
+│   │       │           └── locators/
+│   │       │               └── RegisterPageLocators.java
+│   │       └── utils/                # Utility classes
+│   │           └── SeleniumUtils.java
 │   └── test/
 │       ├── java/
-│       │   ├── runners/          # Test runners
-│       │   └── stepdefinitions/  # Cucumber step definitions
+│       │   ├── data/                 # Test data management
+│       │   │   └── TestDataProvider.java
+│       │   ├── runners/              # Test runners
+│       │   │   └── TestRunner.java
+│       │   └── stepdefinitions/      # Cucumber step definitions
+│       │       └── RegisterStepDefinitions.java
 │       └── resources/
-│           ├── features/         # Cucumber feature files
-│           ├── testdata/         # Test data (Excel files)
-│           └── config/           # Configuration files
-└── pom.xml                       # Maven dependencies
+│           ├── config/               # Configuration files
+│           │   └── lambdatest-config.yaml
+│           ├── features/             # Cucumber feature files
+│           │   └── register.feature
+│           ├── testdata/             # Test data (Excel files)
+│           │   └── TestData.xlsx
+│           └── log4j2.xml            # Logging configuration
+├── drivers/                          # WebDriver executables
+├── logs/                             # Test execution logs
+├── Jenkinsfile                       # CI/CD pipeline
+├── pom.xml                           # Maven dependencies
+└── README.md
 ```
 
-## Dependencies (POM Model)
-Key dependencies in `pom.xml`:
-- Selenium WebDriver (4.18.1)
-- Cucumber (7.16.1)
-- TestNG (7.9.0)
-- Apache POI (5.2.4) - For Excel operations
-- ExtentReports (5.1.1) - For reporting
+## 🛠️ Dependencies
 
-## Test Data Management
-- Test data is stored in Excel files under `src/test/resources/testdata/`
-- Excel structure:
-  ```
-  Sheet1:
-  | Username | Email                |
-  |----------|---------------------|
-  | user1    | user1@example.com   |
-  | user2    | user2@example.com   |
-  ```
-- Data is read using `ExcelUtils` class for dynamic test execution
+### Core Dependencies
+- **Selenium WebDriver** (4.18.1) - Web automation
+- **Cucumber** (7.16.1) - BDD framework
+- **TestNG** (7.9.0) - Test framework
+- **Apache POI** (5.2.4) - Excel operations
+- **SnakeYAML** (2.2) - YAML configuration parsing
+- **Log4j2** - Structured logging
 
-## Cloud Testing Integration
+### Test Dependencies
+- **Cucumber TestNG** - TestNG integration
+- **WebDriverManager** - Driver management
+- **JUnit** - Additional testing support
 
-### LambdaTest Integration
-The framework is integrated with LambdaTest for cross-browser testing:
+## ⚙️ Configuration
+
+### YAML Configuration (`lambdatest-config.yaml`)
+```yaml
+env:
+  BASE_URL: "https://automationexercise.com"
+  LOGIN_URL: "/login"
+
+browser:
+  browserName: Chrome
+  browserVersion: dev
+  LT_Options:
+    build: Java TestNG Sample
+    name: Selenium Test Suite
+    username: your_username
+    accessKey: your_access_key
+    platformName: Windows 10
+    resolution: 1024x768
+    project: Untitled
+    selenium_version: 3.13.0
+    driver_version: 130.0.6683.2
+  remoteUrl: https://username:accesskey@hub.lambdatest.com/wd/hub
+```
+
+### Strong Typing with BrowserConfig
 ```java
-// Example configuration in Commons.java
-DesiredCapabilities capabilities = new DesiredCapabilities();
-capabilities.setCapability("browserName", "Chrome");
-capabilities.setCapability("version", "latest");
-capabilities.setCapability("platform", "Windows 10");
+// Type-safe configuration access
+BrowserConfig browserConfig = ConfigManager.getInstance().getBrowserConfig();
+String browserName = browserConfig.getBrowserName();
+String remoteUrl = browserConfig.getRemoteUrl();
 ```
 
-### BrowserStack Integration (Optional)
-To integrate with BrowserStack, add these configurations:
+## 🧪 Test Data Management
+
+### Excel Structure (`TestData.xlsx`)
+```
+Sheet1:
+| Username | Email                |
+|----------|---------------------|
+| user1    | user1@example.com   |
+| user2    | user2@example.com   |
+| user3    | user3@example.com   |
+```
+
+### Flexible Data Access
 ```java
-// Add to pom.xml
-<dependency>
-    <groupId>com.browserstack</groupId>
-    <artifactId>browserstack-java-sdk</artifactId>
-    <version>1.11.0</version>
-</dependency>
+// Get data from specific row
+String username = TestDataProvider.getUsername(1);
+String email = TestDataProvider.getEmail(1);
 
-// Configuration in Commons.java
-BrowserStackOptions options = new BrowserStackOptions();
-options.setBrowserName("Chrome");
-options.setBrowserVersion("latest");
-options.setOs("Windows");
-options.setOsVersion("10");
+// Backward compatibility
+String username = TestDataProvider.getUsername(); // Uses row 1
 ```
 
-## Jenkins Integration
-The project includes a `Jenkinsfile` for CI/CD pipeline:
+## 🏃‍♂️ Running Tests
 
-### Pipeline Stages
-1. **Checkout**: Pulls the latest code
-2. **Build**: Compiles the project
-3. **Test**: Runs the test suite
-4. **Report**: Generates and publishes test reports
-
-### Jenkins Configuration
-1. Install required plugins:
-   - Pipeline
-   - Git Integration
-   - Cucumber Reports
-   - HTML Publisher
-   - Maven Integration
-
-2. Configure tools in Jenkins:
-   - JDK 11
-   - Maven
-   - Git
-
-3. Create a new Pipeline job:
-   - Use the provided `Jenkinsfile`
-   - Configure Git repository
-   - Set build triggers as needed
-
-## Running Tests
-1. **Local Execution**:
-   ```bash
-   mvn clean test
-   ```
-
-2. **Jenkins Execution**:
-   - Trigger the pipeline manually or
-   - Set up webhook for automatic triggers
-
-3. **Cloud Execution**:
-   - LambdaTest: Configure credentials in environment variables
-   - BrowserStack: Add BrowserStack credentials to Jenkins
-
-### Running Specific Features Using Tags
-You can run specific feature files or scenarios using tags in your feature files and TestRunner:
-
-1. Add tags to your feature files:
-```gherkin
-@smoke
-Feature: User Registration
-  @regression
-  Scenario: Successful registration with valid data
-    Given user is on registration page
-    When user enters valid registration data
-    Then user should be registered successfully
-```
-
-2. Configure tags in TestRunner.java:
-```java
-@CucumberOptions(
-    tags = "@smoke or @regression"  // Run scenarios with either @smoke or @regression tag
-)
-```
-
-Common tag patterns:
-- `@smoke` - Run only smoke tests
-- `@regression` - Run only regression tests
-- `@smoke and @regression` - Run tests with both tags
-- `@smoke or @regression` - Run tests with either tag
-- `not @smoke` - Run all tests except smoke tests
-
-3. Run tests from command line with specific tags:
+### Local Execution
 ```bash
-# Run smoke tests
+# Run all tests
+mvn clean test
+
+# Run with specific tags
 mvn test -Dcucumber.filter.tags="@smoke"
 
-# Run regression tests
-mvn test -Dcucumber.filter.tags="@regression"
-
-# Run tests with both tags
-mvn test -Dcucumber.filter.tags="@smoke and @regression"
+# Run specific feature
+mvn test -Dcucumber.features="src/test/resources/features/register.feature"
 ```
 
-## Reports
-- Cucumber HTML reports: `target/cucumber-reports/cucumber-pretty.html`
-- ExtentReports: `target/extent-reports/`
-- Jenkins pipeline reports available in Jenkins dashboard
+### Jenkins Pipeline
+The project includes a `Jenkinsfile` for CI/CD:
+```groovy
+pipeline {
+    agent any
+    stages {
+        stage('Checkout') { ... }
+        stage('Build') { ... }
+        stage('Test') { ... }
+        stage('Report') { ... }
+    }
+}
+```
 
-## Best Practices
-1. Keep feature files focused and atomic
-2. Use meaningful step definitions
-3. Maintain test data separately
-4. Regular updates of dependencies
-5. Proper error handling and logging
-
-## Contributing
-1. Fork the repository
-2. Create a feature branch
-3. Commit your changes
-4. Push to the branch
-5. Create a Pull Request
-
-## Checking Test Reports
+## 📊 Test Reports
 
 ### Cucumber Reports
-After test execution, you can find Cucumber reports in:
-```
-target/cucumber-reports/
-├── cucumber-pretty.html    # Detailed HTML report
-├── CucumberTestReport.json # JSON report for Jenkins
-└── cucumber-reports.html   # Masterthought report
-```
+- **Location**: `target/cucumber-reports/`
+- **Files**: 
+  - `cucumber-pretty.html` - Detailed HTML report
+  - `CucumberTestReport.json` - JSON report for Jenkins
 
-To view the reports:
-1. Navigate to `target/cucumber-reports/` in your project
-2. Open `cucumber-pretty.html` in a web browser
-3. The report shows:
-   - Test execution summary
-   - Passed/Failed scenarios
-   - Step-by-step execution details
-   - Screenshots (if configured)
-   - Feature and scenario breakdown
-   - Execution time statistics
-   - Tags and hooks information
+### Logs
+- **Location**: `logs/` directory
+- **Format**: Structured Log4j2 logging
+- **Levels**: INFO, DEBUG, WARN, ERROR
 
-### Jenkins Reports
-If running in Jenkins:
-1. Go to your Jenkins job
-2. Click on the latest build
-3. Find reports under:
-   - "Cucumber Reports" section
-   - "Test Results" section
+## 🏗️ Architecture Highlights
 
-### Command Line Report Generation
-To generate reports without running tests:
-```bash
-# Generate Cucumber reports
-mvn verify
-```
-
-### Report Customization
-To customize Cucumber reports, modify `@CucumberOptions` in TestRunner.java:
+### 1. Thread-Safe WebDriver Management
 ```java
-@CucumberOptions(
-    features = "src/test/resources/features",
-    glue = "stepdefinitions",
-    plugin = {
-        "pretty",
-        "html:target/cucumber-reports/cucumber-pretty.html",
-        "json:target/cucumber-reports/CucumberTestReport.json",
-        "com.aventstack.extentreports.cucumber.adapter.ExtentCucumberAdapter:"
+// ThreadLocal ensures each thread gets its own WebDriver instance
+private static final ThreadLocal<RemoteWebDriver> driverThread = new ThreadLocal<>();
+
+// Automatic cleanup with shutdown hook
+Runtime.getRuntime().addShutdownHook(new Thread(DriverManager::shutdown));
+```
+
+### 2. Strong Typing with BrowserConfig POJO
+```java
+public class BrowserConfig {
+    private String browserName;
+    private String browserVersion;
+    private String remoteUrl;
+    private Map<String, Object> ltOptions;
+    
+    // Getters, setters, and validation
+    public void validate() {
+        Objects.requireNonNull(browserName, "browserName must not be null");
+        // ... other validations
     }
-)
-``` 
+}
+```
+
+### 3. Clean Step Definitions
+```java
+@Given("user is on the login page")
+public void userOnTheLoginPage() {
+    registerActions.navigateToLoginPage();
+    registerActions.verifyTheLoginPage();
+}
+```
+
+### 4. Type-Safe Configuration Access
+```java
+// No more string-based lookups
+BrowserConfig config = ConfigManager.getInstance().getBrowserConfig();
+String url = config.getRemoteUrl(); // Compile-time safety
+```
+
+## 🎯 Best Practices Implemented
+
+1. **Separation of Concerns**: Page Objects, Actions, and Commons
+2. **Type Safety**: POJOs instead of raw maps
+3. **Error Handling**: Proper exception propagation
+4. **Thread Safety**: ThreadLocal WebDriver management
+5. **Configuration Management**: YAML-based configuration
+6. **Data-Driven Testing**: Flexible Excel data access
+7. **Clean Code**: No try-catch in step definitions
+8. **Comprehensive Logging**: Structured logging with Log4j2
+
+## 🔧 Setup Instructions
+
+1. **Clone the repository**
+   ```bash
+   git clone <repository-url>
+   cd Selenium-Java-Framework
+   ```
+
+2. **Configure LambdaTest credentials**
+   - Update `lambdatest-config.yaml` with your credentials
+   - Or set environment variables
+
+3. **Install dependencies**
+   ```bash
+   mvn clean install
+   ```
+
+4. **Run tests**
+   ```bash
+   mvn test
+   ```
+
+## 🚀 Cloud Testing Integration
+
+### LambdaTest Setup
+1. Sign up for LambdaTest account
+2. Get your username and access key
+3. Update `lambdatest-config.yaml`
+4. Run tests on cloud infrastructure
+
+### Supported Browsers
+- Chrome, Firefox, Safari, Edge
+- Multiple versions and platforms
+- Parallel execution support
+
+## 📈 Performance Features
+
+- **Parallel Execution**: Thread-safe WebDriver management
+- **Resource Cleanup**: Automatic driver cleanup
+- **Memory Management**: Proper resource disposal
+- **Fast Startup**: Efficient configuration loading
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+## 📝 License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+## 🆘 Support
+
+For support and questions:
+- Create an issue in the repository
+- Check the logs in `logs/` directory
+- Review the Cucumber reports in `target/cucumber-reports/` 

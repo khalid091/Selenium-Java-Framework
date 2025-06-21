@@ -5,20 +5,19 @@ import org.testng.Assert;
 import page.ecomqa.Register_Page.RegisterPage;
 import page.ecomqa.Register_Page.locators.RegisterPageLocators;
 import utils.SeleniumUtils;
-import commons.Commons;
+import commons.DriverManager;
+import commons.ConfigManager;
 
 public class RegisterActions {
-    private final Commons commons;
     private final RemoteWebDriver driver;
     private final SeleniumUtils seleniumUtils;
     private final RegisterPage registerPage;
     private final String loginUrl;
 
     public RegisterActions() {
-        this.commons = new Commons();
-        this.driver = commons.getDriver();
-        this.seleniumUtils = commons.getSeleniumUtils();
-        this.loginUrl = commons.getLoginUrl();
+        this.driver = DriverManager.getDriver();
+        this.seleniumUtils = new SeleniumUtils(driver);
+        this.loginUrl = ConfigManager.getInstance().getLoginUrl();
         this.registerPage = new RegisterPage(driver);
     }
 

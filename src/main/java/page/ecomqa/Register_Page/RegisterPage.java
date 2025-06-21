@@ -3,15 +3,12 @@ package page.ecomqa.Register_Page;
 import page.ecomqa.Register_Page.locators.RegisterPageLocators;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import utils.SeleniumUtils;
-import commons.Commons;
 
 public class RegisterPage {
     private SeleniumUtils seleniumUtils;
-    private Commons commons;
 
     public RegisterPage(RemoteWebDriver driver) {
-        this.commons = new Commons();
-        this.seleniumUtils = commons.getSeleniumUtils();
+        this.seleniumUtils = new SeleniumUtils(driver);
     }
 
     public boolean signupHeaderElement() {
