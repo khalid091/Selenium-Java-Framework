@@ -9,7 +9,6 @@ import io.cucumber.java.Before;
 import actions.RegisterActions;
 import data.TestDataProvider;
 import commons.DriverManager;
-import org.testng.Assert;
 
 /**
  * Step definitions for user registration functionality.
